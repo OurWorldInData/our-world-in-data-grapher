@@ -489,7 +489,13 @@ export class Grapher
 
     // If an author sets a timeline filter run it early in the pipeline so to the charts it's as if the filtered times do not exist
     @computed private get tableAfterAuthorTimelineFilter() {
-        const table = this.inputTable
+        const table = this.inputTable.keepOnlyColumns([
+            ...this.activeColumnSlugs,
+            this.inputTable.timeColumn.slug,
+            this.inputTable.entityNameSlug,
+            this.inputTable.entityIdColumn.slug,
+            this.inputTable.entityCodeColumn.slug,
+        ])
         if (
             this.timelineMinTime === undefined &&
             this.timelineMaxTime === undefined

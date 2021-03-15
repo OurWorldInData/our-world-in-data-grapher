@@ -981,6 +981,25 @@ export class CoreTable<
         )
     }
 
+    keepOnlyColumns(slugs: ColumnSlug[]) {
+        const columnsToKeep = new Set(slugs)
+        const newStore = {
+            ...this.columnStore,
+        }
+        const defs = this.columnsAsArray
+            .filter((col) => columnsToKeep.has(col.slug))
+            .map((col) => col.def) as COL_DEF_TYPE[]
+        Object.keys(newStore).forEach((slug) => {
+            if (!columnsToKeep.has(slug)) delete newStore[slug]
+        })
+        return this.transform(
+            newStore,
+            defs,
+            `Kept only columns '${slugs}'`,
+            TransformType.FilterColumns
+        )
+    }
+
     dropColumns(slugs: ColumnSlug[], message?: string) {
         const columnsToDrop = new Set(slugs)
         const newStore = {
@@ -1475,12 +1494,15 @@ class FilterMask {
     }
 
     apply(columnStore: CoreColumnStore) {
+        console.log(this.numRows, Object.keys(columnStore).length)
+        console.time("filter")
         const columnsObject: CoreColumnStore = {}
         Object.keys(columnStore).forEach((slug) => {
             columnsObject[slug] = columnStore[slug].filter(
                 (slug, index) => this.mask[index]
             )
         })
+        console.timeEnd("filter")
         return columnsObject
     }
 }
