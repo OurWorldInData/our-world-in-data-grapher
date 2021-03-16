@@ -488,7 +488,7 @@ export class Grapher
     }
 
     // If an author sets a timeline filter run it early in the pipeline so to the charts it's as if the filtered times do not exist
-    @computed private get tableAfterAuthorTimelineFilter() {
+    @computed get tableAfterAuthorTimelineFilter() {
         const table = this.inputTable
         if (
             this.timelineMinTime === undefined &&
