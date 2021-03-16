@@ -1494,7 +1494,15 @@ class FilterMask {
     }
 
     apply(columnStore: CoreColumnStore) {
-        console.log(this.numRows, Object.keys(columnStore).length)
+        console.log(
+            "filter.",
+            "old rows:",
+            this.numRows,
+            "new rows:",
+            this.mask.reduce((p, c) => p + (c ? 1 : 0), 0),
+            "columns:",
+            Object.keys(columnStore).length
+        )
         console.time("filter")
         const columnsObject: CoreColumnStore = {}
         Object.keys(columnStore).forEach((slug) => {

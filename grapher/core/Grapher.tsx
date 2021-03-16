@@ -489,13 +489,7 @@ export class Grapher
 
     // If an author sets a timeline filter run it early in the pipeline so to the charts it's as if the filtered times do not exist
     @computed private get tableAfterAuthorTimelineFilter() {
-        const table = this.inputTable.keepOnlyColumns([
-            ...this.activeColumnSlugs,
-            this.inputTable.timeColumn.slug,
-            this.inputTable.entityNameSlug,
-            this.inputTable.entityIdColumn.slug,
-            this.inputTable.entityCodeColumn.slug,
-        ])
+        const table = this.inputTable
         if (
             this.timelineMinTime === undefined &&
             this.timelineMaxTime === undefined
@@ -507,6 +501,16 @@ export class Grapher
         )
     }
 
+    @computed private get tableAfterAuthorTimelineAndColumnFilter() {
+        return this.tableAfterAuthorTimelineFilter.keepOnlyColumns([
+            ...this.activeColumnSlugs,
+            this.inputTable.timeColumn.slug,
+            this.inputTable.entityNameSlug,
+            this.inputTable.entityIdColumn.slug,
+            this.inputTable.entityCodeColumn.slug,
+        ])
+    }
+
     // Convenience method for debugging
     windowQueryParams(str = location.search) {
         return strToQueryParams(str)
@@ -514,7 +518,7 @@ export class Grapher
 
     @computed
     private get tableAfterAuthorTimelineAndActiveChartTransform(): OwidTable {
-        const table = this.tableAfterAuthorTimelineFilter
+        const table = this.tableAfterAuthorTimelineAndColumnFilter
         if (!this.isReady || !this.isChartOrMapTab) return table
         return this.chartInstance.transformTable(table)
     }
