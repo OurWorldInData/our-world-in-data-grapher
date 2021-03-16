@@ -931,7 +931,11 @@ export class CoreTable<
 
     appendRows(rows: ROW_TYPE[], opDescription: string) {
         return this.concat(
-            [new (this.constructor as any)(rows, this.defs) as CoreTable],
+            [
+                new (this.constructor as any)(rows, this.defs, {
+                    parent: this.parent,
+                }) as CoreTable,
+            ],
             opDescription
         )
     }

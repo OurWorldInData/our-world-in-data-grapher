@@ -604,7 +604,7 @@ export class Explorer
     }
 
     @computed get entityPickerTable() {
-        return this.grapher?.table
+        return this.grapher?.inputTable
     }
 
     @computed get pickerColumnSlugs() {

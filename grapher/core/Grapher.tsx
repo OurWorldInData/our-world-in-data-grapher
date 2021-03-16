@@ -543,7 +543,7 @@ export class Grapher
     }
 
     @computed get table() {
-        return this.tableAfterAuthorTimelineFilter
+        return this.tableAfterAuthorTimelineAndColumnFilter
     }
 
     @computed
